@@ -5,7 +5,7 @@ import java.util.Map;
 
 import file.BlockId;
 
-public class LockTable {
+class LockTable {
 	private static final long MAX_TIME = 10000; //10 sec
 	
 	private Map<BlockId, Integer> locks = new HashMap<BlockId, Integer>();
@@ -39,7 +39,7 @@ public class LockTable {
 		}
 	}
 	
-	private void unlock (BlockId blk) {
+	synchronized void unlock (BlockId blk) {
 		int val = getLockVal(blk);
 		if (val > 1)
 			locks.put(blk, val-1);
@@ -52,13 +52,13 @@ public class LockTable {
 	private boolean hasXlock (BlockId blk) {
 		return getLockVal(blk) > 0;
 	}
-
-	private boolean waitingTooLong(long starttime) {
-		return System.currentTimeMillis() - starttime > MAX_TIME;
-	}
 	
 	private boolean hasOtherSLocks(BlockId blk) {
 		return getLockVal(blk) > 1;
+	}
+
+	private boolean waitingTooLong(long starttime) {
+		return System.currentTimeMillis() - starttime > MAX_TIME;
 	}
 	
 	private int getLockVal(BlockId blk) {

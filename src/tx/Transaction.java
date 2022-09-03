@@ -12,7 +12,7 @@ import tx.recovery.RecoveryMgr;
 public class Transaction {
 	private static int nextTxNum = 0;
 	private static final int END_OF_FILE = -1;
-	private RecoveryMgr recoverMgr;
+	private RecoveryMgr recoveryMgr;
 	private ConcurrencyMgr concurMgr;
 	private BufferMgr bm;
 	private FileMgr fm;
@@ -110,7 +110,7 @@ public class Transaction {
 	}
 	
 	private static synchronized int nextTxNumber() {
-		nextTxNum++
+		nextTxNum++;
 		return nextTxNum;
 	}
 	

@@ -25,7 +25,7 @@ public class ConcurrencyMgr {
 	
 	public void release() {
 		for (BlockId blk : locks.keySet())
-			lockstbl.unlock(blk);
+			locktbl.unlock(blk);
 		locks.clear();
 	}
 	
