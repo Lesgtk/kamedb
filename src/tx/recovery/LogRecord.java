@@ -15,7 +15,7 @@ public interface LogRecord {
 	void undo(Transaction tx);
 	
 	static LogRecord createLogRecord(byte[] bytes) {
-		Page page = new Page(bytes);
+		Page p = new Page(bytes);
 		switch (p.getInt(0)) {
 		case CHECKPOINT:
 			return new CheckpointRecord();
