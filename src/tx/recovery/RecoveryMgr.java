@@ -1,11 +1,16 @@
 package tx.recovery;
 
-import java.util.*;
-import file.*;
-import log.*;
-import buffer.*;
-import tx.Transaction;
 import static tx.recovery.LogRecord.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+import buffer.Buffer;
+import buffer.BufferMgr;
+import file.BlockId;
+import log.LogMgr;
+import tx.Transaction;
 
 public class RecoveryMgr {
 	private LogMgr lm;
@@ -30,14 +35,14 @@ public class RecoveryMgr {
 	public void rollback() {
 		doRollback();
 		bm.flushAll(txnum);
-		int lsn = RollbackRecord,writeToLog(lm, txnum);
+		int lsn = RollbackRecord.writeToLog(lm, txnum);
 		lm.flush(lsn);
 	}
 	
 	public void recover() {
 		doRecover();
 		bm.flushAll(txnum);
-		int lsn = CheckpointRecord.writeToLog(lm, txnum);
+		int lsn = CheckpointRecord.writeToLog(lm);
 		lm.flush(lsn);
 	}
 	
@@ -68,7 +73,7 @@ public class RecoveryMgr {
 	
 	private void doRecover() {
 		Collection<Integer> finishedTxs = new ArrayList<>();
-		Irerator<byte[]> iter = lm.iterator();
+		Iterator<byte[]> iter = lm.iterator();
 		while (iter.hasNext()) {
 			byte[] bytes = iter.next();
 			LogRecord rec = LogRecord.createLogRecord(bytes);

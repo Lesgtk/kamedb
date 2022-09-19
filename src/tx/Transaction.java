@@ -72,7 +72,7 @@ public class Transaction {
 		Buffer buff = mybuffers.getBuffer(blk);
 		int lsn = -1;
 		if (okToLog)
-			lsn = recoverMgr.setInt(buff, offset, val);
+			lsn = recoveryMgr.setInt(buff, offset, val);
 		Page p = buff.contents();
 		p.setInt(offset, val);
 		buff.setModified(txnum, lsn);
@@ -83,7 +83,7 @@ public class Transaction {
 		Buffer buff = mybuffers.getBuffer(blk);
 		int lsn = -1;
 		if (okToLog)
-			lsn = recoverMgr.setString(buff, offset, val);
+			lsn = recoveryMgr.setInt(buff, offset, lsn);
 		Page p = buff.contents();
 		p.setString(offset, val);
 		buff.setModified(txnum, lsn);
@@ -102,7 +102,7 @@ public class Transaction {
 	}
 	
 	public int blockSize() {
-		return bm.bolckSize();
+		return fm.blockSize();
 	}
 	
 	public int availableBuffs() {
